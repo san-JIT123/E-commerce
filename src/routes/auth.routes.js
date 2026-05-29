@@ -4,7 +4,7 @@ import {
   registerController,
 } from "../controller/auth.controller.js";
 
-let router = express();
+let router = express.Router();
 
 // register router
 router.post("/register", registerController);

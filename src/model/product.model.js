@@ -1,0 +1,46 @@
+const mongoose = require("mongoose");
+
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Product name is required"],
+      trim: true,
+      minlength: [2, "Name must be at least 2 characters"],
+      maxlength: [100, "Name is too long"],
+    },
+
+    description: {
+      type: String,
+      required: [true, "Description is required"],
+      minlength: [10, "Description must be at least 10 characters"],
+    },
+
+    price: {
+      type: Number,
+      required: [true, "Price is required"],
+      min: [1, "Price must be greater than 0"],
+    },
+
+    category: {
+      type: String,
+      required: [true, "Category is required"],
+      enum: ["Men", "Women", "Kids", "Other"],
+    },
+
+    image: {
+      type: [String],
+      default: [],
+      validate: {
+        validator: function (arr) {
+          return arr.length <= 5; // max 5 images
+        },
+        message: "You can upload maximum 5 images",
+      },
+    },
+  },
+  { timestamps: true },
+);
+
+const ProductModel = mongoose.model("products", productSchema);
+export default ProductModel;

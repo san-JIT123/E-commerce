@@ -1,9 +1,26 @@
 import { registerService } from "../service/auth.service.js";
+import ApiResponse from "../utils/apiResponse.js";
 import asyncHandle from "../utils/asyncHandle.js";
 
-let registerController = asyncHandle(async (req, res) => {
-  let result = await registerService(req.body);
-  res.send("ok");
+//   Register User Controller
+const registerController = asyncHandle(async (req, res) => {
+  const { newUser, token } = await registerService(req.body);
+
+  //   set jwt cookie
+  res.cookie(
+    "token",
+    token,
+
+    //     httpOnly: true, // prevent JS access (security)
+    //     secure: true, // only HTTPS (production)
+    //     sameSite: "strict", // CSRF protection
+    //
+  );
+
+  //   Send Response to Frontend
+  return res
+    .status(201)
+    .json(new ApiResponse("User registered successfully", newUser));
 });
 
 export default registerController;

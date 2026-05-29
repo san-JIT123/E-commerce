@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // auth api
-app.use("/api/auth/register", authRouter);
+app.use("/api/auth", authRouter);
 
 // Global Error handling
 app.use(errorMiddleware);

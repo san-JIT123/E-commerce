@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-let userSchema = new mongoose.Schema(
+//  User schema
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -29,6 +31,19 @@ let userSchema = new mongoose.Schema(
   },
 );
 
-let UserModel = mongoose.model("users", userSchema);
+// password hashing middleware
+userSchema.pre("save", async function () {
+  try {
+    if (!this.isModified("password")) return;
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  } catch (error) {
+    throw error;
+  }
+});
+
+// user model create
+const UserModel = mongoose.model("users", userSchema);
 
 export default UserModel;

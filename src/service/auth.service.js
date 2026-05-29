@@ -47,3 +47,41 @@ export const registerService = async (data) => {
   // response data
   return { newUser, token };
 };
+
+export const loginService = async (data) => {
+  const { email, password } = data;
+
+  //   validation:
+
+  // Check empty fields
+  if (!email || !password) {
+    throw new ApiError("All fields are required", 400);
+  }
+
+  // Password validation
+  if (password.length < 6) {
+    throw new ApiError("Password must be at least 6 characters", 400);
+  }
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new ApiError("Invalid email", 400);
+  }
+
+  //   Check  existing user
+  const isExisting = await UserModel.findOne({ email });
+  if (!isExisting) {
+    throw new ApiError("user not found", 404);
+  }
+
+  //   Check compare password
+  let comparePassword = isExisting.comparePassword(password);
+  if (!comparePassword) throw new ApiError("Invalid Credential", 401);
+
+  //   token generation
+  const token = generateJwtSecretKey(isExisting._id, isExisting.email);
+
+  // response data
+  return { isExisting, token };
+};

@@ -1,12 +1,14 @@
 import authMiddleware from "../middleware/auth.middleware.js";
 import ProductModel from "../model/product.model.js";
-import { createProductService } from "../service/product.service.js";
+import {
+  createProductService,
+  updateProductService,
+} from "../service/product.service.js";
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import asyncHandle from "../utils/asyncHandle.js";
 
 // product create controller
-
 export let createProductController = asyncHandle(async (req, res) => {
   // service layer pass data
   const data = await createProductService(req);
@@ -37,3 +39,15 @@ export let getProductByIdController = asyncHandle(async (req, res) => {
     .status(200)
     .json(new ApiResponse("Get Product By id Successfully", getProductById));
 });
+
+// update product controller
+export let updateProductController = asyncHandle(async (req, res) => {
+  let updateProduct = await updateProductService(req);
+
+  return res
+    .status(200)
+    .json(new ApiResponse("Update Product successfully", updateProduct));
+});
+
+// delete Product Controller
+export let deleteProductController = asyncHandle(async (req, res) => {});

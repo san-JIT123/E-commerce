@@ -116,3 +116,45 @@ export let updateProductService = async (req) => {
 
   return updateProduct;
 };
+
+// product delete service
+export const deleteProductService = async (req) => {
+  const { id } = req.params;
+
+  //  validation
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError("Invalid Product ID", 400);
+  }
+
+  //  delete only logged In user
+
+  const deletedProduct = await ProductModel.findOneAndDelete({
+    _id: id,
+    user: req.user.email,
+  });
+
+  if (!deletedProduct) {
+    throw new ApiError("Product not found or unauthorized", 404);
+  }
+
+  return deletedProduct;
+};
+
+export const getCategoryService = async (req) => {
+  const { category } = req.query;
+
+  console.log(category);
+  // Filter Object
+  const filter = {};
+
+  // Category Filtering
+  if (category && category.trim()) {
+    filter.category = category.trim();
+  }
+
+
+  // filter object find 
+  let products = await ProductModel.find(filter)
+
+  return products
+};

@@ -2,6 +2,8 @@ import authMiddleware from "../middleware/auth.middleware.js";
 import ProductModel from "../model/product.model.js";
 import {
   createProductService,
+  deleteProductService,
+  getCategoryService,
   updateProductService,
 } from "../service/product.service.js";
 import ApiError from "../utils/apiError.js";
@@ -50,4 +52,20 @@ export let updateProductController = asyncHandle(async (req, res) => {
 });
 
 // delete Product Controller
-export let deleteProductController = asyncHandle(async (req, res) => {});
+export let deleteProductController = asyncHandle(async (req, res) => {
+  let data = await deleteProductService(req);
+
+  return res
+    .status(200)
+    .json(new ApiResponse("Delete Product successfully", data));
+});
+
+export let getCategoryController = asyncHandle(async (req, res) => {
+  const categoryProduct = await getCategoryService(req);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse("get category product successfully", categoryProduct),
+    );
+});

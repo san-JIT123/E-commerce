@@ -3,6 +3,7 @@ import {
   createProductController,
   deleteProductController,
   getAllProductController,
+  getCategoryController,
   getProductByIdController,
   updateProductController,
 } from "../controller/product.controller.js";
@@ -34,9 +35,8 @@ router.put(
 );
 
 // delete product
-router.delete(
-  "/delete/:id",
-  authMiddleware,
-  deleteProductController,
-);
+router.delete("/delete/:id", authMiddleware, deleteProductController);
+
+// category product
+router.get("/", getCategoryController);
 export default router;

@@ -1,4 +1,5 @@
 import authMiddleware from "../middleware/auth.middleware.js";
+import ProductModel from "../model/product.model.js";
 import { createProductService } from "../service/product.service.js";
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
@@ -14,4 +15,12 @@ export let createProductController = asyncHandle(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse("Product create Successfully", data));
+});
+
+export let getAllProductController = asyncHandle(async (req, res) => {
+  let allProducts = await ProductModel.find();
+
+  return res
+    .status(200)
+    .json(new ApiResponse("Get all Product Fetch Successfully", allProducts));
 });

@@ -17,10 +17,23 @@ export let createProductController = asyncHandle(async (req, res) => {
     .json(new ApiResponse("Product create Successfully", data));
 });
 
+//all product controller
 export let getAllProductController = asyncHandle(async (req, res) => {
   let allProducts = await ProductModel.find();
 
   return res
     .status(200)
     .json(new ApiResponse("Get all Product Fetch Successfully", allProducts));
+});
+
+//get id product controller
+export let getProductByIdController = asyncHandle(async (req, res) => {
+  let { id } = req.params;
+  // if(!id)
+  console.log(id);
+  let getProductById = await ProductModel.findById(id);
+  console.log(getProductById);
+  return res
+    .status(200)
+    .json(new ApiResponse("Get Product By id Successfully", getProductById));
 });

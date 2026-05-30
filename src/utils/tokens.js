@@ -3,12 +3,12 @@ import jwt from "jsonwebtoken";
 export const generateJwtSecretKey = (userId, email) => {
   return jwt.sign(
     {
-      id: userId,
+      userId,
       email,
     },
     process.env.JWT_SECRET_KEY,
     {
-      expiresIn: "5m",
+      expiresIn: "1d",
     },
   );
 };

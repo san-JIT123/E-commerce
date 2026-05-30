@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    name: {
+    productName: {
       type: String,
       required: [true, "Product name is required"],
       trim: true,
@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema(
 
     description: {
       type: String,
-      required: [true, "Description is required"],
+      default: "type Description",
       minlength: [10, "Description must be at least 10 characters"],
     },
 
@@ -24,8 +24,8 @@ const productSchema = new mongoose.Schema(
 
     category: {
       type: String,
-      required: [true, "Category is required"],
       enum: ["Men", "Women", "Kids", "Other"],
+      default: "Men",
     },
 
     image: {
